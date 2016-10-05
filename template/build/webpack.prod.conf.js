@@ -1,3 +1,4 @@
+var OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin')
 var path = require('path')
 var config = require('../config')
 var utils = require('./utils')
@@ -77,6 +78,17 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']
+    }),
+    // optimize/minimize the CSS assets
+    new OptimizeCssAssetsPlugin({
+      assetNameRegExp: /\.css$/g,
+      cssProcessor: require('cssnano'),
+      cssProcessorOptions: {
+        discardComments: {
+          removeAll: true
+        }
+      },
+      canPrint: true
     })
   ]
 })
